@@ -17,9 +17,10 @@ import load_policy
 import keras
 import argparse
 import random
+from decimal import Decimal
 
 TRAIN_RATIO = 0.8
-T = 1000
+T = 100
 
 def get_model(observations, actions):
 
@@ -30,7 +31,6 @@ def get_model(observations, actions):
     ])
 
     num_train = int( TRAIN_RATIO*observations.shape[0] )
-    print("Use {} data to train the model".format(TRAIN_RATIO*observations.shape[0]))
 
     X_train = observations[:num_train]
     Y_train = actions[:num_train]
@@ -48,7 +48,7 @@ def get_model(observations, actions):
 
 def main():
 
-    beta = 0.9
+    beta = 0.99
 
     parser = argparse.ArgumentParser()
     parser.add_argument('expert_policy_file', type=str)
@@ -69,7 +69,7 @@ def main():
         observations = []
         expert_actions = []
         env = gym.make(args.envname)
-        sum_beta = 0
+        #sum_beta = 0
 
         pi = keras.models.load_model(args.agent_policy_file)
         print('loaded the agent policy {}'.format(args.agent_policy_file))
@@ -82,12 +82,10 @@ def main():
             done = False
             totalr = 0.
             steps = 0
-            sum_beta += beta
-            beta = sum_beta/(i+1) - 0.01
-            print("New beta {}/{} is {}".format(sum_beta, i+1, sum_beta/(i+1)))
+            print("beta is {}".format(beta**i))
 
             while not done:
-                if(random.random() < beta):
+                if(random.random() < beta**i):
                     print("Query expert")
                     action = policy_fn(obs[None,:])
                     expert_actions.append(action)
