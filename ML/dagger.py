@@ -5,6 +5,7 @@ Utilities are from UC Berkeley CS294 homework.
 https://github.com/berkeleydeeprlcourse/homework/tree/master/hw1
 
 Usage:
+     python dagger.py experts/Hopper-v1.pkl Models/behavior_cloning.h5 Hopper-v1 --render --num_rollouts 30
 
 """
 
