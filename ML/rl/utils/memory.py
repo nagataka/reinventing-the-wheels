@@ -4,8 +4,9 @@ import random
 import numpy as np
 from collections import namedtuple
 
+# 'action_prob' is for policy gradient
 Transition = namedtuple('Transition',
-                        ('state', 'action', 'next_state', 'reward'))
+                        ('state', 'action', 'action_prob', 'next_state', 'reward'))
 
 class ReplayMemory(object):
 
@@ -21,8 +22,17 @@ class ReplayMemory(object):
         self.memory[self.position] = Transition(*args)
         self.position = (self.position + 1) % self.capacity
 
+    def flush(self):
+        """Clear all of the stored transitions
+        """
+        self.memory = []
+        self.position = 0
+
     def sample(self, batch_size):
         return random.sample(self.memory, batch_size)
+
+    def get_memory(self):
+        return self.memory
 
     def __len__(self):
         return len(self.memory)
