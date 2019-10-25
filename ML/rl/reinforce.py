@@ -68,14 +68,15 @@ class Agent():
 
 
     def train(self, num_epochs, gamma):
-        # initialization
+        print(num_epochs)
 
         for e in range(num_epochs):
+            # initialization
             self.memory.flush()
             state = self.env.reset()
             done = False
             total_reward = 0
-            self.env.render()
+            #self.env.render()
 
             while not done:
                 action_prob = self.policy( torch.from_numpy(state).float() )
@@ -83,7 +84,7 @@ class Agent():
                 log_prob = torch.log( action_prob[action] )
                 next_state, reward, done, _ = self.env.step(action)
                 self.memory.push(state, action, log_prob, next_state, reward)
-                self.env.render()
+                #self.env.render()
 
                 total_reward += reward
                 state = next_state 
