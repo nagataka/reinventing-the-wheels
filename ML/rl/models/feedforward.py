@@ -7,10 +7,12 @@ import math
 class Feedforward(nn.Module):
     def __init__(self, in_size, out_size):
         super(Feedforward, self).__init__()
-        self.fc = nn.Linear(in_size, out_size)
+        self.fc1 = nn.Linear(in_size, 10)
+        self.fc2 = nn.Linear(10, out_size)
 
     def forward(self, x):
-        return F.softmax(self.fc(x))
+        x = F.relu(self.fc1(x))
+        return F.softmax(self.fc2(x))
 
 
 class ValueNetwork(nn.Module):

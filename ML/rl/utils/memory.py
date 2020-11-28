@@ -4,9 +4,8 @@ import random
 import numpy as np
 from collections import namedtuple
 
-# 'action_prob' is for policy gradient
 Transition = namedtuple('Transition',
-                        ('state', 'action', 'action_prob', 'next_state', 'reward'))
+                        ('state', 'action', 'next_state', 'reward'))
 
 class ReplayMemory(object):
 
