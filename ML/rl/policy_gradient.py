@@ -19,7 +19,13 @@ class Agent():
         self.algo = algo # currently not used. Future work to make learning algorithms modular.
         self.env = env
         self.policy = Feedforward(env.observation_space.shape[0], env.action_space.n)
+
+        # Reusing ReplayMemory class for Q-learning, but this may be a bit confusing so let me clarify (I'm just lazy here)
+        # As policy gradient is on-policy method, you can not use experiences generated from a different policy
+        # I'm flushing the memory at the beggining of every epoch (see train function) so the policy is updated
+        # only on the trajectories from the current policy
         self.memory = ReplayMemory(memory_size)
+
         self.n_actions = env.action_space.n
         if optimizer == 'Adam':
             self.optim = optim.Adam(self.policy.parameters())
